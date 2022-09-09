@@ -65,8 +65,8 @@ A default template is used, but you can also set a theme template fr website wit
 
 
 ## Creating a module manually
-You need to add a __init__.py file at the root of the module telling odoo what to init
-The init files are letting our module aware of the file it have to handle
+You need to add an __init__.py file at the root of the module telling odoo what to init
+The init files are letting our module aware of the file it has to handle
 The __manifest__.py file is used to create the module base information
 
 The base tree of the module should be so:
