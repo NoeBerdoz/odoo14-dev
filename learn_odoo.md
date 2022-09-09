@@ -16,7 +16,8 @@ The functions of the subdirectories are as follows:
 • filestore/: This is used as a file store.  
 • logs/ (optional): This is used to store the server log files.  
 
-# Activate debug mode
+# Debug mode
+## Activate debug mode
 From your odoo instance:
 - Authenticate as admin
 - Go to Settings menu from up-left menu
@@ -31,7 +32,7 @@ http://localhost:8069/web?debug=assets#menu_id=102&action=94.
 
 The with assets mode won't minify the CSS and JS code, it's useful when debugging web
 
-# Deactivate debug mode
+## Deactivate debug mode
 - From the menu where you activated it
 - Edit URL and add ?debug=0
 - Click on the bug in the menu bar and chodoo/odoo-bin -c instance.cfg -d dbname -u addon1 \
