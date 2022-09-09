@@ -133,7 +133,53 @@ def name_get(self):
  result.append((record.id, rec_name))
  return result
 ```
- 
+
+### Fields
+#### Fields type
+
+- **Char** -> string
+- **Text** -> multiline string
+- **Selection** -> enum (Be aware that '0' can't be set as integer key)
+- **Html** -> similar to **Text** but with rich text storage in Html format
+- **Binary** -> binary files (images or documents)
+- **Boolean** -> Bool
+- **Date** -> Date handled as Python date object (fields.Date.today() to set current date as default)
+- **Datetime** -> datetime handled as Python datetime object (fields.Date.now to set current datetime as default)
+- **Integer** -> int
+- **Float** -> float, their precision can be defined
+- **Monetary** -> amount with currency
+
+Default fields that shouldn't be set manually:
+- **id** -> id
+- **create_date** -> record creation timestamp
+- **create_uid** -> user who created record
+- **write_date** -> last edit timestamp
+- **write_uid** -> user from last edit
+
+Special fields:
+- **_log_access=False** -> To disable the creation of the 4 log fields:  
+- **active** -> only records with active set to True are visible
+
+#### Fields attribute
+- **string** -> field's title used in GUI, if not set it will show an adapted field name (first case Upper, '_' as ' ') 
+- **translate** -> make the field translatable depending on user language
+- **default** -> default field value
+- **help** -> explanation text on field hover
+- **groups** -> make field restricted to user group
+- **states** -> dynamically set a state value from a selection value (states are attributes: readonly, required, invisible)
+- **copy** -> set field to copy or not when record duplicated (True for N to N, False for 1 to N)
+- **index** -> set True to create a database index (for faster searches)
+- **readonly** -> readonly security permission
+- **required** -> required field
+- **company_dependant** -> field store different value for each company
+- **group_operator** -> SQL group operator (count, count_distinct, array_agg, bool_and, bool_or, max, min, avg, sum)
+- **sanitize** -> secure content from injections, used by **Html** field
+  - sanitize_tags=True -> remove tags that are not part of the whitelist (default)
+  - sanitize_attributes=True -> remove attributes of tags that are not part of whitelist
+  - sanitize_style=True -> remove style properties that are not part of whitelist
+  - strip_style=True -> remove all style elements
+  - strip_class=True -> remove the class attributes
+
 ## View
 Add a xml view in /views and fill it with Odoo xml page constructor
 
