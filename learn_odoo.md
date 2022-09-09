@@ -5,6 +5,8 @@ By Noé Berdoz
 
 This file stands for my notes while learning Odoo with the Odoo 14 Development cookbook
 
+My main work on a custom module is present here:
+[local/my_library](https://github.com/NoeBerdoz/odoo14-dev/tree/master/local/my_library)
 
 # Directories Roles
 The functions of the subdirectories are as follows:  
