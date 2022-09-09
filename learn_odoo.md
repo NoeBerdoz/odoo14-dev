@@ -201,8 +201,10 @@ Views are built with XML within an <odoo> tag
 </odoo>
 ```
 
-## Settings permissions 
-Add base rules in a xml
+## Security Settings
+You can define users/groups permissions on records/views
+
+Add base rules in a xml:
 ```
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Security rules -->
@@ -213,7 +215,7 @@ Add base rules in a xml
     </record>
 </odoo>
 ```
-and set permissions in a csv like so 
+and set permissions in a csv like so:
 ```
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 acl_book,library.book default,model_library_book,,1,0,0,0
