@@ -27,7 +27,7 @@ From URL:
 -> http://localhost:8069/web#menu_id=102&action=94   
 --> http://localhost:8069/web?debug=1#menu_id=102&action=94.  
 
-Debug with assets:
+Debug with assets:  
 http://localhost:8069/web?debug=assets#menu_id=102&action=94.
 
 The with assets mode won't minify the CSS and JS code, it's useful when debugging web
@@ -35,8 +35,7 @@ The with assets mode won't minify the CSS and JS code, it's useful when debuggin
 ## Deactivate debug mode
 - From the menu where you activated it
 - Edit URL and add ?debug=0
-- Click on the bug in the menu bar and chodoo/odoo-bin -c instance.cfg -d dbname -u addon1 \
---stop-after-initoose Leave developer tools
+- Click on the bug in the menu bar and choose *Leave developer tools*
 
 # Modules
 They are found with the __manifest__.py file inside their directory.
