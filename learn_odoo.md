@@ -40,7 +40,6 @@ The with assets mode won't minify the CSS and JS code, it's useful when debuggin
 # Modules
 They are found with the __manifest__.py file inside their directory.
 
-
 ## Install a module
 From the web interface with an administrator account 
 Or from command line wiht -i parameter 
@@ -90,6 +89,7 @@ my_module/
 
 
 ## Model
+
 The model folder is used to generate the database table for the module
 You have to implement it with a class
 ```
@@ -105,6 +105,8 @@ class LibraryBook(models.Model):
         string='Authors'
     )
 ```
+
+To see a model structure from the GUI, activate de developer mode and go to Settings -> Technical | Database Structure | Models
 
 When a model is modified you need to upgrade the module 
 
@@ -167,7 +169,7 @@ Special fields:
 - **help** -> explanation text on field hover
 - **groups** -> make field restricted to user group
 - **states** -> dynamically set a state value from a selection value (states are attributes: readonly, required, invisible)
-- **copy** -> set field to copy or not when record duplicated (True for N to N, False for 1 to N)
+- **copy** -> set field to copy or not when record duplicated (True for m2m, False for o2m)
 - **index** -> set True to create a database index (for faster searches)
 - **readonly** -> readonly security permission
 - **required** -> required field
@@ -179,6 +181,45 @@ Special fields:
   - sanitize_style=True -> remove style properties that are not part of whitelist
   - strip_style=True -> remove all style elements
   - strip_class=True -> remove the class attributes
+
+
+### Relations
+Odoo has his own ORM API
+
+Depending on the relations between the model, the database structure will be adapted.  
+
+Many-to-many relations don't add columns to te tables for the models,
+they create an intermediate table with two columns to store the related ID's.
+
+Odoo handles that, the intermediate table name will be by default the two related models alphabetically sorted with a '_rel' suffix
+
+#### Relational fields:
+- **many-to-one** -> commonly abbreviated m2o
+- **one-to-many** -> commonly abbreviated 02m
+- **many-to-one** -> commonly abbreviated m2m
+
+#### Relational attributes:
+- **ondelete** -> determines what happens when record is deleted (set null, restrict, cascade)
+- **context** -> adds variable to client context
+- **domain** -> search filter to limit the list of available records related
+- **relation** -> only m2m, overrides the default name of intermediate table
+- **comodel_name** -> target model identifier
+- **column1** -> name for the m2o field
+- **column2** -> name for the m2o field linking to comodel
+- **inverse_name** -> only for o2m, field name in the target model for inverse many-to-one relation
+- **limit** -> for o2m and m2m, limit number of records to read in GUI
+
+#### Special relations
+More than once Many2many relations between the same two models:  
+Provide the relation table name for the second relation, otherwise the default name will conflict
+
+Intermediate table with a default name > 63 characters:  
+use the **relation** attribute to set a shorter name
+PostgreSQL identifier limit is 63 characters, however odoo puts the identifier name liek so
+<model1>_<model2>_rel_<model1>_id_<model2>_id_key
+
+## Base Models
+- **res.partner** -> represent people, organizations, addresses
 
 ## Views
 Views are built with XML within an <odoo> tag
