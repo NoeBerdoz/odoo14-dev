@@ -180,8 +180,26 @@ Special fields:
   - strip_style=True -> remove all style elements
   - strip_class=True -> remove the class attributes
 
-## View
-Add a xml view in /views and fill it with Odoo xml page constructor
+## Views
+Views are built with XML within an <odoo> tag
+
+```
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Example custom tree (list) view -->
+    <record id="library_book_view_tree" model="ir.ui.view">
+        <field name="name">Library Book List</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="date_release"/>
+                <field name="short_name"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
+```
 
 ## Settings permissions 
 Add base rules in a xml
