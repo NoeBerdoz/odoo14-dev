@@ -27,7 +27,7 @@
                         <field name="short_name"/>
                         <field name="date_release"/>
                         <field name="date_updated"/>
-                        <field nme="cover" widget="image" class="oe_avatar"/>
+                        <field name="cover" widget="image" class="oe_avatar"/>
                         <field name="reader_rating"/>
                     </group>
                 </group>
