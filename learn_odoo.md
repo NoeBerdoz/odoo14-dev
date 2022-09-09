@@ -52,14 +52,17 @@ Do it with the web interface or with a shell command
 
 ## Creating a module from command line
 Shut down your odoo server and do this command where you want the new module to be stored
-$ ../env/bin/python ../src/odoo/odoo-bin scaffold my_module
+
+    $ ../env/bin/python ../src/odoo/odoo-bin scaffold my_module
 
 If you want to manually set the module path:
 Consider the following example:
-$ ~/odoo-dev/odoo/odoo-bin scaffold my_module ~/odoo-dev/local-addons
 
-A default template is used but you can also set a theme template fr website with option -t:
-$ ~/odoo-dev/odoo/odoo-bin scaffold -t path/to/template my_module
+    $ ~/odoo-dev/odoo/odoo-bin scaffold my_module ~/odoo-dev/local-addons
+
+A default template is used, but you can also set a theme template fr website with option -t:
+    
+    $ ~/odoo-dev/odoo/odoo-bin scaffold -t path/to/template my_module
 
 
 ## Creating a module manually
