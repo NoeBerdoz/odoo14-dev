@@ -42,6 +42,7 @@ class LibraryBook(models.Model):
         company_dependant=False
     )
     reader_rating = fields.Float('Reader Average Rating', digits=(14, 4),)  # Rating, digits prm is decimal precision
+    category_id = fields.Many2one('library.book.category')
 
     # Override name_get function to set display_name as name with date_release
     def name_get(self):
