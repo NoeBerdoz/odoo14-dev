@@ -10,7 +10,13 @@ class LibraryBook(models.Model):
     name = fields.Char('Title', required=True)  # Book title
     date_release = fields.Date('Release Date')  # Book release date
     date_updated = fields.Datetime('Last Updated')  # Book time updated
-    author_ids = fields.Many2many('res.partner', string='Authors')  # Book authors, authors are partners, N to N
+    author_ids = fields.Many2many('res.partner', string='Authors')  # Book to authors, authors are partners, m2m
+    publisher_id = fields.Many2one(
+        'res.partner', string='Publisher',
+        ondelete='set null',
+        context={},
+        domain=[],
+    )
     notes = fields.Text('Internal Notes')  # Book notes
     state = fields.Selection(
         [
@@ -23,6 +29,10 @@ class LibraryBook(models.Model):
     description = fields.Html('Description', sanitize=True, strip_style=False)
     cover = fields.Binary('Book Cover')  # Binary stand for a file stored
     out_of_print = fields.Boolean('Out of Print?')  # Book print status
+    # Odoo v < 13 -> cost_price = fields.Float( 'Book Cost', digits=dp.get_precision('Book Price')).
+    cost_price = fields.Float('Book Cost', digits='Book price')  # Book cost with decimal accuracy setting
+    currency_id = fields.Many2one('res.currency', string='Currency')
+    retail_price = fields.Monetary('Retail Price')
     # Book page numbers
     pages = fields.Integer(
         'Number of Pages',
@@ -41,3 +51,17 @@ class LibraryBook(models.Model):
             result.append((record.id, rec_name))
 
         return result
+
+
+# Other class in the same document for learning simplicity
+# This will be added to the res.partner model
+class ResPartner(models.Model):
+    _inherit = 'res.partner'  # Inheritance of res.partner model
+    published_book_ids = fields.One2many(  # Book id, one book to many authors, o2m
+        'library.book', 'publisher_id',
+        string='Published Books'
+    )
+    authored_book_ids = fields.Many2many(  # many authors to many books, m2m
+        'library.book',
+        string='Authored Books'
+    )
