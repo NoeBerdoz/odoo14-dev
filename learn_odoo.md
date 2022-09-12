@@ -303,7 +303,7 @@ _inherits = {'res.partner': 'partner_id'}  # Delegation inheritance, sets the pa
         ondelete='cascade'  # Deleting a partner will delete the corresponding member
     )
     
-    # or like this with delegation attribute 
+    # or like this with delegation attribute  shortcut
 
     partner_id = fields.Many2one(
         'res.partner',

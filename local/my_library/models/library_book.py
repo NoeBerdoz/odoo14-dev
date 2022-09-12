@@ -165,10 +165,10 @@ class ResPartner(models.Model):
 # Other class in the same document to simplified learning
 class LibraryMember(models.Model):
     _name = 'library.member'
-    _inherits = {'res.partner': 'partner_id'}  # Delegation inheritance, sets the parent models to inherit from
     partner_id = fields.Many2one(
         'res.partner',
-        ondelete='cascade'  # Deleting a partner will delete the corresponding member
+        ondelete='cascade',  # Deleting a partner will delete the corresponding member
+        delegate=True
     )
     date_start = fields.Date('Member Since')
     date_end = fields.Date('Termination Date')
