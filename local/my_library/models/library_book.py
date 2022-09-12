@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import models, fields, api
 from datetime import timedelta
 
 
@@ -11,6 +11,7 @@ class LibraryBook(models.Model):
     name = fields.Char('Title', required=True)  # Book title
     date_release = fields.Date('Release Date')  # Book release date
     date_updated = fields.Datetime('Last Updated')  # Book time updated
+    # Relational fields
     author_ids = fields.Many2many('res.partner', string='Authors')  # Book to authors, authors are partners, m2m
     publisher_id = fields.Many2one(
         'res.partner', string='Publisher',
@@ -18,6 +19,25 @@ class LibraryBook(models.Model):
         context={},
         domain=[],
     )
+    publisher_city = fields.Char(
+        'Publisher City',
+        related='publisher_id.city',
+        readonly=True
+    )
+
+    # Provide a model dynamically
+    @api.model
+    def _referencable_models(self):
+        models = self.env['ir.model'].search([
+            ('field_id.name', '=', 'message_ids')
+        ])
+        return [(x.model, x.name) for x in models]
+
+    ref_doc_id = fields.Reference(
+        selection='_referencable_models',
+        string='Reference Document'
+    )
+
     notes = fields.Text('Internal Notes')  # Book notes
     state = fields.Selection(
         [
