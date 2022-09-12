@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 
 
 class LibraryBook(models.Model):
@@ -43,6 +43,28 @@ class LibraryBook(models.Model):
     )
     reader_rating = fields.Float('Reader Average Rating', digits=(14, 4),)  # Rating, digits prm is decimal precision
     category_id = fields.Many2one('library.book.category')
+
+    # SQL Constraints
+    _sql_constraints = [
+        (
+            'name_uniq',
+            'UNIQUE (name)',
+            'Book title must be unique.'
+        ),
+        (
+            'positive_page',
+            'CHECK(pages>0)',
+            'No of pages must be positive'
+        )
+    ]
+
+    @api.constrains('date_release')
+    def check_release_date(self):
+        for record in self:
+            if record.date_release and record.date_release > fields.Date.today():
+                raise models.ValidationError(
+                    'Release date must be in the past'
+                )
 
     # Override name_get function to set display_name as name with date_release
     def name_get(self):

@@ -62,7 +62,6 @@ A default template is used, but you can also set a theme template fr website wit
     
     $ ~/odoo-dev/odoo/odoo-bin scaffold -t path/to/template my_module
 
-
 ## Creating a module manually
 You need to add an __init__.py file at the root of the module telling odoo what to init
 The init files are letting our module aware of the file it has to handle
@@ -72,21 +71,28 @@ The base tree of the module should be so:
 
 my_module/  
 ├── controllers  
-│   ├── controllers.py  
-│   └── __init__.py  
+├── controllers.py  
+│ └── __init__.py  
 ├── demo  
-│   └── demo.xml  
+│ └── demo.xml  
 ├── __init__.py  
 ├── __manifest__.py  
 ├── models  
-│   ├── __init__.py  
-│   └── models.py  
+│ ├── __init__.py  
+│ └── models.py  
 ├── security  
-│   └── ir.model.access.csv  
+│ └── ir.model.access.csv  
 └── views  
     ├── templates.xml  
     └── views.xml  
 
+
+## Update a module
+From command line:
+
+	$ env/bin/python src/odoo/odoo-bin -c .odoorc -u my_library -d odoo14-dev
+
+Or you can upgrade it from the web interface
 
 ## Model
 
@@ -108,11 +114,7 @@ class LibraryBook(models.Model):
 
 To see a model structure from the GUI, activate de developer mode and go to Settings -> Technical | Database Structure | Models
 
-When a model is modified you need to upgrade the module 
-
-	$ env/bin/python src/odoo/odoo-bin -c .odoorc -u my_library -d odoo14-dev
-
-Or you can upgrade it from the web interface
+When a model is modified you need to upgrade the module
 
 When you implement a new module with a view, be aware that you need to configure permissions on the view, 
 to see the view without configurations, go to the superuser mode -> debug icon -> Become superuser
@@ -218,6 +220,10 @@ use the **relation** attribute to set a shorter name
 PostgreSQL identifier limit is 63 characters, however odoo puts the identifier name liek so
 <model1>_<model2>_rel_<model1>_id_<model2>_id_key
 
+### # Hierarchy
+TODO: learn more about how Odoo manage hierarchy 
+-> currently on page 96
+
 ## Base Models
 - **res.partner** -> represent people, organizations, addresses
 
@@ -262,6 +268,46 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 acl_book,library.book default,model_library_book,,1,0,0,0
 acl_book_librarian,library.book_librarian,model_library_book,group_librarian,1,1,1,1
 ```
+
+# SQL Constraints 
+Models can have validations preventing them undesired data
+Odoo supports two different type of constraints:
+
+- Checked at the database level
+- Checked at the server level
+
+Database level constraints are limited to the one supported by PostgreSQL.
+ex: UNIQUE, CHECK, EXCLUDE.
+
+If they are not matching our needs, we can use Odoo server level constraints
+that are made with Python.
+
+Database level constraints
+```
+    _sql_constraints = [
+        (
+            'name_uniq',
+            'UNIQUE (name)',
+            'Book title must be unique.'
+        ),
+        (
+            'positive_page',
+            'CHECK(pages>0)',
+            'No of pages must be positive'
+        )
+    ]
+```
+Server level constraints
+```
+    @api.constrains('date_release')
+    def check_release_date(self):
+        for record in self:
+            if record.date_release and record.date_release > fields.Date.today():
+                raise models.ValidationError(
+                    'Release date must be in the past'
+                )
+```
+
 
 # User management
 The user with a user_id = 1 represent the administrator user
