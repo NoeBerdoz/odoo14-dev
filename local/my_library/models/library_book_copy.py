@@ -2,9 +2,10 @@ from odoo import models, fields, api
 from datetime import timedelta
 
 
-class LibraryBook(models.Model):
-    _name = 'library.book'  # This will be library_book in the database
-    _description = 'Library Book'  # Model user-friendly title
+class LibraryBookCopy(models.Model):
+    _name = 'library.book.copy'  # This will be library_book_copy in the database
+    _inherit = 'library.book'
+    _description = 'Library Book\'s Copy'  # Model user-friendly title
     _order = 'date_release desc, name'  # Sort the records from the newest to the oldest, then by title
     _rec_name = 'short_name'  # Use short_name as record representation
     short_name = fields.Char('Short Title', translate=True, index=True, required=True)  # Short Book title
@@ -139,7 +140,7 @@ class LibraryBook(models.Model):
         return result
 
 
-# Other class in the same document to simplified learning
+# Other class in the same document for learning simplicity
 # This will be added to the res.partner model
 class ResPartner(models.Model):
     _inherit = 'res.partner'  # Inheritance of res.partner model
@@ -160,18 +161,3 @@ class ResPartner(models.Model):
     def _compute_count_books(self):
         for r in self:
             r.count_books = len(r.authored_book_ids)
-
-
-# Other class in the same document to simplified learning
-class LibraryMember(models.Model):
-    _name = 'library.member'
-    _inherits = {'res.partner': 'partner_id'}  # Delegation inheritance, sets the parent models to inherit from
-    partner_id = fields.Many2one(
-        'res.partner',
-        ondelete='cascade'  # Deleting a partner will delete the corresponding member
-    )
-    date_start = fields.Date('Member Since')
-    date_end = fields.Date('Termination Date')
-    member_number = fields.Char()
-    date_of_birth = fields.Date('Date of birth')
-

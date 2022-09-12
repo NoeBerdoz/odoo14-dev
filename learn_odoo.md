@@ -251,9 +251,66 @@ PostgreSQL identifier limit is 63 characters, however odoo puts the identifier n
 <model1>_<model2>_rel_<model1>_id_<model2>_id_key
 
 
-### # Hierarchy
-TODO: learn more about how Odoo manage hierarchy 
--> currently on page 96
+### # Hierarchy / Inheritance
+Odoo provides 3 types of inheritance:
+- Class inheritance (extension)
+- Prototype inheritance
+- Delegation inheritance
+
+#### Class inheritance
+When a model class is defined with the **_inherit** attribute
+it adds modification instead of replacing.
+
+If you add a new method by inheriting existing methods, you should 
+include a **super** statement to call its version in the parent class
+
+```
+    authored_book_ids = fields.Many2many(  # many authors to many books, m2m
+        'library.book',
+        string='Authored Books'
+    )
+    count_books = fields.Integer(
+        'Number of Authored Books',
+        compute='_compute_count_books'
+    )
+
+    @api.depends('authored_book_ids')
+    def _compute_count_books(self):
+        for r in self:
+            r.count_books = len(r.authored_book_ids)
+```
+
+#### Prototype inheritance
+Prototype inheritance copy the entire definition of the existing model.
+
+It won't work if you use the same model name in the **_inherit** and **_name**
+attributes, it will behave like a normal extension inheritance.
+
+Prototype inheritance is rarely used in practice,
+we usually use delegation inheritance as it doesn't need to duplicate data structures.
+
+#### Delegation inheritance
+When you don't want to modify an existing model, but also don't want to 
+create duplicate data structures, you can use delegation inheritance.
+Instead of **_inherit** it uses the **_inherits** class attributes,
+
+Delegation inheritance **only works for fields** and **not for methods**.
+
+```
+_inherits = {'res.partner': 'partner_id'}  # Delegation inheritance, sets the parent models to inherit from
+    partner_id = fields.Many2one(
+        'res.partner',
+        ondelete='cascade'  # Deleting a partner will delete the corresponding member
+    )
+    
+    # or like this with delegation attribute 
+
+    partner_id = fields.Many2one(
+        'res.partner',
+        ondelete='cascade',  # Deleting a partner will delete the corresponding member
+        delegate=True
+    )
+```
 
 ## Base Models
 - **res.partner** -> represent people, organizations, addresses
