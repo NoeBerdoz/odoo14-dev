@@ -49,6 +49,7 @@
                 <field name="name"/>
                 <field name="date_release"/>
                 <field name="short_name"/>
+                <field name="age_days"/>
             </tree>
         </field>
     </record>

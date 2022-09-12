@@ -184,6 +184,36 @@ Special fields:
   - strip_style=True -> remove all style elements
   - strip_class=True -> remove the class attributes
 
+### Computed fields
+Computed fields are fields that are calculated from other fields. 
+Ex. total amount calculated from multiple prices and quantity.
+
+```
+    @api.depends('date_release')
+    def _compute_age(self):
+        today = fields.Date.today()
+        for book in self:
+            if book.date_release:
+                delta = today - book.date_release
+                book.age_days = delta.days
+            else:
+                book.age_days = 0
+```
+
+Computed fields are dynamically calculated at runtime, they are not stored
+in the database. The ORM uses caching to avoid useless recalculating.
+
+To use the ORM caching you have to use the @depends decorator to let it detect
+when the value changes
+
+Be aware that the compute function need a value for the @depends decorator to work, 
+if there are conditions setting the value to NULL, il will raise an error tricky to debug.
+
+There are many computed flags:
+
+- **store** -> set to True to store field in the database, no needs to implement a search method.
+- **compute_sudo** -> set to True to do the computation with elevated privileges
+- 
 
 ### Relations
 Odoo has his own ORM API
@@ -219,6 +249,7 @@ Intermediate table with a default name > 63 characters:
 use the **relation** attribute to set a shorter name
 PostgreSQL identifier limit is 63 characters, however odoo puts the identifier name liek so
 <model1>_<model2>_rel_<model1>_id_<model2>_id_key
+
 
 ### # Hierarchy
 TODO: learn more about how Odoo manage hierarchy 
@@ -284,7 +315,7 @@ that are made with Python.
 
 Database level constraints
 ```
-    _sql_constraints = [
+    _sql_constraints = [Book Category model
         (
             'name_uniq',
             'UNIQUE (name)',
@@ -297,6 +328,7 @@ Database level constraints
         )
     ]
 ```
+
 Server level constraints
 ```
     @api.constrains('date_release')
