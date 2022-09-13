@@ -312,6 +312,29 @@ _inherits = {'res.partner': 'partner_id'}  # Delegation inheritance, sets the pa
     )
 ```
 
+#### Abstract models
+When you want to add a feature to multiple model, 
+use an abstract model and inherit it to a regular model.
+
+```
+class BaseArchive(models.AbstractModel):
+    _name = 'base.archive'
+    active = fields.Boolean(default=True)
+
+    def do_archive(self):
+        for record in self:
+            record.active = not record.active  # set it to opposite
+```
+
+And then in the regular model:
+
+```
+class LibraryBook(models.Model):
+    _name = 'library.book'
+    _inherit = ['base.archive']  # Inherit abstract model base.archive
+```
+
+
 ## Base Models
 - **res.partner** -> represent people, organizations, addresses
 

@@ -2,8 +2,20 @@ from odoo import models, fields, api
 from datetime import timedelta
 
 
+# Other class in the same document to simplifed learning
+# This normally should be in a proper other module
+class BaseArchive(models.AbstractModel):
+    _name = 'base.archive'
+    active = fields.Boolean(default=True)
+
+    def do_archive(self):
+        for record in self:
+            record.active = not record.active  # set it to opposite
+
+
 class LibraryBook(models.Model):
     _name = 'library.book'  # This will be library_book in the database
+    _inherit = ['base.archive']  # Inherit abstract model base.archive
     _description = 'Library Book'  # Model user-friendly title
     _order = 'date_release desc, name'  # Sort the records from the newest to the oldest, then by title
     _rec_name = 'short_name'  # Use short_name as record representation
@@ -174,4 +186,6 @@ class LibraryMember(models.Model):
     date_end = fields.Date('Termination Date')
     member_number = fields.Char()
     date_of_birth = fields.Date('Date of birth')
+
+
 
