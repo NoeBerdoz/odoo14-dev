@@ -19,7 +19,10 @@
                     <group>
                         <field name="name"/>
                         <field name="author_ids" widget="many2many_tags"/>
-                        <field name="state"/>
+                        <button name="make_available" string="Make Available" type="object"/>
+                        <button name="make_borrowed" string="Make Borrowed" type="object"/>
+                        <button name="make_lost" string="Make Lost" type="object"/>
+                        <field name="state" widget="statusbar"/>
                         <field name="pages"/>
                         <field name="cost_price"/>
                         <field name="currency_id"/>
