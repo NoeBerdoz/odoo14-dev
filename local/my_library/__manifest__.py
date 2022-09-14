@@ -7,6 +7,12 @@
     'category': 'Uncategorized',
     'version': '14.0.1.0.0',
     'depends': ['base'],
-    'data':['views/library_book.xml', 'security/groups.xml', 'security/ir.model.access.csv'],
+    'data':
+        [
+        'views/library_book.xml',
+        'views/library_book_category.xml',
+        'security/groups.xml',
+        'security/ir.model.access.csv'
+    ],
     'demo':['demo.xml']
  }

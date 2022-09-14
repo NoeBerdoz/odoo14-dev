@@ -463,3 +463,39 @@ It has a **context** attribute which is a dictionary that contains the context o
 it contains the language of the user, time zone, current selection of records ...
 
 
+# Database seeding
+To add multiple records in one in the database
+For example in a model:
+```
+    def create_categories(self):
+        categ1 = {
+            'name': 'Child category 1',
+            'description': 'Description for child 1'
+        }
+
+        categ2 = {
+            'name': 'Child category 2',
+            'description': 'Description for child 2'
+        }
+
+        parent_category_val = {
+            'name': 'Parent category',
+            'description': 'Description for parent category',
+            'child_ids': [
+                (0, 0, categ1),
+                (0, 0, categ2),
+            ]
+        }
+
+        record = self.env['library.book.category'].create(parent_category_val)
+        
+        # it's also possible like so: 
+        # mutliple_records = self.env['library.book.category'].create([categ1, categ2])
+```
+
+To create a record with a Many2one relation, set the relation value with an integer that represent
+the related ID
+
+To create a record with a One2many or a Many2many relation, set a tuple with three elements
+(0, 0, dict_val) -> Creates a relation to the main record
+(6, 0, id_list) -> Creates a relation to many records (Caution: when used on a One2many field, will remove the records from previous relations)
