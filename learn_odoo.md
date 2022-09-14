@@ -426,17 +426,40 @@ The exceptions are caught by the RPC layer (Remote Procedure Call).
 
 Any exception that is not defined in odoo.exceptions will be handled as an internal server error (HTTP status 500)
 
-To show a pop up to the user:
+To show a pop-up to the user:
 ```
 msg = _('Moving from %s to %s is not allowed') % (book.state, new_state)
 raise UserError(msg)
 ```
+
+Error classes examples: 
+- **ValidationError** -> Python constraint is not respected
+- **Access Error** -> User action not permitted 
+- **RedirectWaning** -> For this error, you can show a redirection button with the error message
 
 # User management
 The user with a user_id = 1 represent the administrator user
 
 
 # Manage Translations
-
 The **_()** function is defined in odoo.tools.translate
 It is used to mark a string as translatable
+
+
+# Environment class
+The **env** attribute of any recordset is available as 
+**self.env[model_name]**.   
+It's an instance of the **Environment** class that is 
+defined in the **odoo.api** module.
+
+This class provides a shortcut access to the registry by giving a Python dictionary.
+It gives an empty recordset of the [model_name]
+
+It also provides a **cr** attribute which is an SQL cursor
+
+It has a **user** attribute which is a reference to the current user performing the call
+
+It has a **context** attribute which is a dictionary that contains the context of the call, 
+it contains the language of the user, time zone, current selection of records ...
+
+

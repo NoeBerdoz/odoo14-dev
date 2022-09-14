@@ -188,6 +188,13 @@ class LibraryBook(models.Model):
 
         return result
 
+    # Example of log button
+    def log_all_library_members(self):
+        library_member_model = self.env['library.member']
+        all_members = library_member_model.search([])
+        print("ALL MEMBERS: ", all_members)
+        return True
+
 
 # Other class in the same document to simplified learning
 # This will be added to the res.partner model

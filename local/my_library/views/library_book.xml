@@ -28,6 +28,7 @@
                         <field name="currency_id"/>
                         <field name="retail_price"/>
                         <field name="notes"/>
+                        <button name="log_all_library_members" string="Log Members" type="object"/>
                     </group>
                     <group>
                         <field name="short_name"/>
