@@ -463,7 +463,8 @@ It has a **context** attribute which is a dictionary that contains the context o
 it contains the language of the user, time zone, current selection of records ...
 
 
-# Database seeding
+# Manage records
+## Create records
 To add multiple records in one in the database
 For example in a model:
 ```
@@ -499,3 +500,24 @@ the related ID
 To create a record with a One2many or a Many2many relation, set a tuple with three elements
 (0, 0, dict_val) -> Creates a relation to the main record
 (6, 0, id_list) -> Creates a relation to many records (Caution: when used on a One2many field, will remove the records from previous relations)
+
+
+## Update records
+To update records in database, there is 3 possibilities
+
+By attributing value
+```
+self.ensure_one() # update only one record
+self.date_release = fields.Date.today()
+```
+
+By using the **update()** method
+```
+self.update({
+ 'date_release': fields.Datetime.now(),
+ 'another_field': 'value'
+ ...
+ })
+```
+
+Or by using the **write()** method

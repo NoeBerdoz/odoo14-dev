@@ -195,6 +195,10 @@ class LibraryBook(models.Model):
         print("ALL MEMBERS: ", all_members)
         return True
 
+    def change_release_date(self):
+        self.ensure_one()
+        self.date_release = fields.Date.today()
+        
 
 # Other class in the same document to simplified learning
 # This will be added to the res.partner model
