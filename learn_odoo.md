@@ -420,6 +420,23 @@ Server level constraints
                 )
 ```
 
+# Error raising
+Odoo manage the Python raised exception in different ways depending on the exception class.
+The exceptions are caught by the RPC layer (Remote Procedure Call).
+
+Any exception that is not defined in odoo.exceptions will be handled as an internal server error (HTTP status 500)
+
+To show a pop up to the user:
+```
+msg = _('Moving from %s to %s is not allowed') % (book.state, new_state)
+raise UserError(msg)
+```
 
 # User management
 The user with a user_id = 1 represent the administrator user
+
+
+# Manage Translations
+
+The **_()** function is defined in odoo.tools.translate
+It is used to mark a string as translatable
