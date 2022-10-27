@@ -341,7 +341,7 @@ class LibraryBook(models.Model):
 ## Views
 Views are built with XML within an <odoo> tag
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- Example custom tree (list) view -->
@@ -358,6 +358,23 @@ Views are built with XML within an <odoo> tag
     </record>
 </odoo>
 ```
+
+There are inheritance in views that are really useful to manipulate 
+a view based on a parent view, 
+
+You can for example replace a field or add something before/after it,
+Here we are inheriting a base res.partner view and we are replacing the place 
+of the "ref" field before the "type" field.
+```xml
+ <!-- Replace parent position of reference and global numbers -->
+<field name="ref" position="replace"/>
+<field name="type" position="before">
+    <field name="ref" string="Internal Reference"/>
+    <field name="global_id"/>
+    <field name="global_id"/>
+</field>
+```
+
 
 ## Security Settings
 You can define users/groups permissions on records/views
